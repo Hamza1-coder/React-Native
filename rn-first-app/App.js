@@ -1,38 +1,24 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, TextInput, View, Button, Text, ScrollView, FlatList } from 'react-native';
+import { StyleSheet, View, FlatList } from 'react-native';
 import React, { useState } from 'react'
+import GoalItem from './components/GoalItem';
+import GoalInput from './components/GoalInput';
 
 export default function App() {
-  const [enteredGoal, setEnteredGoal] = useState("");
   const [courseGoal, setCourseGoal] = useState([]);
 
-  const goalInputHandler = (enteredText) => {
-    setEnteredGoal(enteredText);
-  }
-
-  const addGoalHandler = () => {
+  const addGoalHandler = (enteredGoal, setEnteredGoal) => {
     setCourseGoal(currentGoals => [...currentGoals, { key: Math.random().toString(), value: enteredGoal }]);
     setEnteredGoal(""); // Clear the input after adding the goal
   }
 
   return (
     <View style={styles.screen}>
-      <View style={styles.inputContainer}>
-        <TextInput
-          placeholder='Course Goal'
-          style={styles.inputText}
-          onChangeText={goalInputHandler}
-          value={enteredGoal}
-        />
-        <Button title='ADD' onPress={addGoalHandler} color="#4CAF50" />
-      </View>
+      <GoalInput addGoalHandler={addGoalHandler} />
       <FlatList
         style={styles.list}
         data={courseGoal}
         renderItem={({ item }) => (
-          <View style={styles.listItem}>
-            <Text>{item.value}</Text>
-          </View>
+          <GoalItem title={item.value} />
         )}
         keyExtractor={item => item.key}
       />
@@ -40,7 +26,7 @@ export default function App() {
   );
 }
 
-const styles = {
+const styles = StyleSheet.create({
   screen: {
     flex: 1,
     justifyContent: 'flex-start',
@@ -48,29 +34,7 @@ const styles = {
     paddingTop: 50, // Add padding for the fixed input field
     backgroundColor: '#f0f0f0', // Light background color
   },
-  inputContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 20,
-    width: '80%',
-  },
-  inputText: {
-    flex: 1,
-    borderBottomWidth: 1,
-    borderColor: '#4CAF50', // Green border color
-    backgroundColor: '#ffffff', // White background
-    padding: 10,
-    marginRight: 10,
-  },
   list: {
     width: '80%',
   },
-  listItem: {
-    padding: 10,
-    marginVertical: 5,
-    backgroundColor: '#D0EFC6', // Light green background color
-    borderBottomWidth: 1,
-    borderColor: '#4CAF50', // Green border color
-  },
-};
+});
