@@ -1,9 +1,7 @@
 import React, { useState } from 'react'
 import {
     View,
-    Text,
     StyleSheet,
-    Button,
     TouchableWithoutFeedback,
     Keyboard,
     Alert,
@@ -12,9 +10,11 @@ import Card from '../components/Card'
 import Colors from '../constants/Colors'
 import Input from '../components/Input'
 import NumberContainer from '../components/NumberContainer'
+import BodyText from '../components/BodyText'
+import TitleText from '../components/TitleText'
+import {AppButton as Button} from '../components/AppButton'
 
-
-const StartGameScreen = ({onStartGame}) => {
+const StartGameScreen = ({ onStartGame }) => {
     const [enterdValue, setEnterdValue] = useState('');
     const [confrimed, setConfrimed] = useState(false);
     const [selectedNumber, setSelectedNumber] = useState();
@@ -43,20 +43,20 @@ const StartGameScreen = ({onStartGame}) => {
     }
     if (confrimed) {
         var confrimedOutput = <Card style={styles.summaryContainer}>
-            <Text> You Selected </Text>
+            <BodyText> You Selected </BodyText>
             <NumberContainer>{selectedNumber}</NumberContainer>
-            <View style={styles.button}>
-                <Button title='Start Game' color={Colors.primary} onPress={() => onStartGame(selectedNumber)}/>
-            </View>
+            <Button style={{ backgroundColor: Colors.primary, width: '70%'}} onPress={() => onStartGame(selectedNumber)}>
+                Start Game
+            </Button>
 
         </Card>
     }
     return (
         <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss() }}>
             <View style={styles.screen}>
-                <Text style={styles.title}>Start a New Game!</Text>
+                <TitleText style={styles.title}>Start a New Game!</TitleText>
                 <Card style={styles.inputContainer}>
-                    <Text > Select a Number </Text>
+                    <BodyText> Select a Number </BodyText>
                     <Input
                         style={styles.input}
                         blurOnSubmit // when press done it hide the keyboard
@@ -68,12 +68,12 @@ const StartGameScreen = ({onStartGame}) => {
                         value={enterdValue}
                     />
                     <View style={styles.buttonContainer}>
-                        <View style={styles.button}>
-                            <Button title='Reset' onPress={resetInputHandler} color={Colors.accent} />
-                        </View>
-                        <View style={styles.button}>
-                            <Button title='Confrim' onPress={confrimInputHandler} color={Colors.primary} />
-                        </View>
+                        <Button style={{ backgroundColor: Colors.accent}} onPress={resetInputHandler}>
+                            Reset
+                        </Button>
+                        <Button style={{ backgroundColor: Colors.primary }} onPress={confrimInputHandler}>
+                            Confirm
+                        </Button>
                     </View>
                 </Card>
                 {confrimedOutput}
@@ -102,11 +102,6 @@ const styles = StyleSheet.create({
         width: '100%',
         justifyContent: 'space-between',
         paddingHorizontal: 15,
-    },
-    button: {
-        width: '40%', // Equal width for both buttons
-        borderRadius: 10, // Rounded border
-        overflow: 'hidden', // Clip child content within rounded border
     },
     input: {
         width: 50,
